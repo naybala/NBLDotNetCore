@@ -71,6 +71,26 @@ namespace NBLDotNetCore.ConsoleApp
             Console.WriteLine(message);
         }
 
+        public void Update(int id,string title, string author , string content)
+        {
+            SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
+            connection.Open();
+            string query = @"UPDATE [dbo].[Tbl_Blog]
+                           SET [BlogTitle] = @BlogTitle
+                              ,[BlogAuthor] = @BlogAuthor
+                              ,[BlogContent] = @BlogContent
+                           WHERE [BlogId] = @BlogId";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            cmd.Parameters.AddWithValue("@BlogTitle", title);
+            cmd.Parameters.AddWithValue("@BLogAuthor", author);
+            cmd.Parameters.AddWithValue("@BlogContent", content);
+            int result = cmd.ExecuteNonQuery();
+            connection.Close();
+            string message = Result(result, "Updating");
+            Console.WriteLine(message);
+        }
+
         
     }
 }
