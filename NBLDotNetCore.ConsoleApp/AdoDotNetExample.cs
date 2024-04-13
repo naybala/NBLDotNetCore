@@ -71,6 +71,32 @@ namespace NBLDotNetCore.ConsoleApp
             Console.WriteLine(message);
         }
 
+        public void Edit(int id)
+        {
+            SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
+            connection.Open();
+            string query = @"select * from Tbl_Blog
+                             WHERE [BlogId] = @BlogId";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sqlDataAdapter.Fill(dt);
+            connection.Close();
+            if(dt.Rows.Count == 0)
+            {
+                Console.WriteLine("No data found!");
+                return;
+            }
+            foreach (DataRow dr in dt.Rows)
+            {
+                Console.WriteLine(dr["BlogId"]);
+                Console.WriteLine(dr["BlogTitle"]);
+                Console.WriteLine(dr["BlogAuthor"]);
+                Console.WriteLine(dr["BlogContent"]);
+            }
+        }
+
         public void Update(int id,string title, string author , string content)
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
