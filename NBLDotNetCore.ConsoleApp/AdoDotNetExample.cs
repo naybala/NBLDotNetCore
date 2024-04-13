@@ -91,6 +91,19 @@ namespace NBLDotNetCore.ConsoleApp
             Console.WriteLine(message);
         }
 
-        
+        public void Delete(int id)
+        {
+            SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
+            connection.Open();
+            string query = @"DELETE FROM [dbo].[Tbl_Blog]
+                              WHERE [BlogId] = @BlogId";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            int result = cmd.ExecuteNonQuery();
+            connection.Close();
+            string message = Result(result, "Deleting");
+            Console.WriteLine(message);
+        }
+
     }
 }
