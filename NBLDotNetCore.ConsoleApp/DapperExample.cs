@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ internal class DapperExample
         Edit(1);
         Create("U Mya Book", "U Mya", "This is Content");
         Update(1,"U Mya Book", "U Mya", "This is Content");
+        Delete(1);
     }
 
     private void Read()
@@ -93,6 +95,20 @@ internal class DapperExample
         using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
         int result = db.Execute(query, item);
         string message = result > 0 ? "Updating Success." : "Updating Failed.";
+        Console.WriteLine(message);
+    }
+
+    private void Delete(int id)
+    {
+        var item = new BlogDto
+        {
+            BlogId = id
+        };
+        string query = @"DELETE FROM [dbo].[Tbl_Blog]
+                              WHERE [BlogId] = @BlogId";
+        using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
+        int result = db.Execute(query, item);
+        string message = result > 0 ? "Deleting Success." : "Deleting Failed.";
         Console.WriteLine(message);
     }
 
