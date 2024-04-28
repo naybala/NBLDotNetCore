@@ -14,7 +14,8 @@ namespace NBLDotNetCore.ConsoleApp
             DataSource = "DAVION",
             InitialCatalog = "DotNetTrainning",
             UserID = "sa",
-            Password = "sa@123"
+            Password = "sa@123",
+            TrustServerCertificate = true
         };
 
     }
