@@ -13,6 +13,7 @@ internal class EFCoreExample
     public void Run()
     {
         Read();
+        Edit(7);
     }
 
     private void Read()
@@ -26,5 +27,20 @@ internal class EFCoreExample
             Console.WriteLine(item.BlogContent);
             Console.WriteLine("=============================================");
         }
+    }
+
+    public void Edit(int id)
+    {
+        var item = db.Blogs.FirstOrDefault(x => x.BlogId == id);
+        if (item is null)
+        {
+            Console.WriteLine("No Data Found");
+            return;
+        }
+        Console.WriteLine(item.BlogId);
+        Console.WriteLine(item.BlogTitle);
+        Console.WriteLine(item.BlogAuthor);
+        Console.WriteLine(item.BlogContent);
+        Console.WriteLine("=============================================");
     }
 }
