@@ -16,6 +16,7 @@ internal class DapperExample
         Read();
         Edit(1);
         Create("U Mya Book", "U Mya", "This is Content");
+        Update(1,"U Mya Book", "U Mya", "This is Content");
     }
 
     private void Read()
@@ -68,9 +69,31 @@ internal class DapperExample
 
         using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
         int result = db.Execute(query, item);
-        string message = result > 0 ? "Insert Success." : "Inserting Failed.";
+        string message = result > 0 ? "Inserting Success." : "Inserting Failed.";
         Console.WriteLine(message);
 
+    }
+
+    private void Update(int id,string title, string author, string content)
+    {
+        var item = new BlogDto
+        {
+            BlogId = id,
+            BlogTitle = title,
+            BlogAuthor = author,
+            BlogContent = content
+        };
+
+        string query = @"UPDATE [dbo].[Tbl_Blog]
+                           SET [BlogTitle] = @BlogTitle
+                              ,[BlogAuthor] = @BlogAuthor
+                              ,[BlogContent] = @BlogContent
+                           WHERE [BlogId] = @BlogId";
+
+        using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
+        int result = db.Execute(query, item);
+        string message = result > 0 ? "Updating Success." : "Updating Failed.";
+        Console.WriteLine(message);
     }
 
 }
