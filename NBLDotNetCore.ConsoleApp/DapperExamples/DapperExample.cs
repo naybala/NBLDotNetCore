@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using NBLDotNetCore.ConsoleApp.Dtos;
+using NBLDotNetCore.ConsoleApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +10,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBLDotNetCore.ConsoleApp;
+namespace NBLDotNetCore.ConsoleApp.DapperExamples;
 
 internal class DapperExample
 {
@@ -17,14 +19,14 @@ internal class DapperExample
         Read();
         Edit(1);
         Create("U Mya Book", "U Mya", "This is Content");
-        Update(1,"U Mya Book", "U Mya", "This is Content");
+        Update(1, "U Mya Book", "U Mya", "This is Content");
         Delete(1);
     }
 
     private void Read()
     {
         using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
-        List<BlogDto> lst =  db.Query<BlogDto>("Select * from tbl_blog").ToList();
+        List<BlogDto> lst = db.Query<BlogDto>("Select * from tbl_blog").ToList();
         foreach (BlogDto item in lst)
         {
             Console.WriteLine(item.BlogId);
@@ -39,7 +41,7 @@ internal class DapperExample
     {
         using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
         var item = db.Query<BlogDto>("Select * from tbl_blog where BlogId = @BlogId", new BlogDto { BlogId = id }).FirstOrDefault();
-        if(item is null)
+        if (item is null)
         {
             Console.WriteLine("No Data Found");
             return;
@@ -76,7 +78,7 @@ internal class DapperExample
 
     }
 
-    private void Update(int id,string title, string author, string content)
+    private void Update(int id, string title, string author, string content)
     {
         var item = new BlogDto
         {

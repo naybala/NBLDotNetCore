@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NBLDotNetCore.ConsoleApp.Dtos;
 
-namespace NBLDotNetCore.ConsoleApp;
+namespace NBLDotNetCore.ConsoleApp.EfCoreExamples;
 
 internal class EFCoreExample
 {
@@ -55,7 +56,7 @@ internal class EFCoreExample
             BlogAuthor = author,
             BlogContent = content
         };
-        db.Blogs.Add(item); 
+        db.Blogs.Add(item);
         int result = db.SaveChanges();
 
         string message = result > 0 ? "Inserting Successful" : "Inserting Failed";
@@ -65,14 +66,14 @@ internal class EFCoreExample
     private void Update(int id, string title, string author, string content)
     {
         var item = db.Blogs.FirstOrDefault(x => x.BlogId == id);
-        if(item is null)
+        if (item is null)
         {
             Console.WriteLine("No Data Found");
             return;
         }
         item.BlogTitle = title;
-        item.BlogAuthor = author;   
-        item.BlogContent = content; 
+        item.BlogAuthor = author;
+        item.BlogContent = content;
 
         int result = db.SaveChanges();
 
@@ -80,7 +81,7 @@ internal class EFCoreExample
         Console.Write(message);
     }
 
-    private void Delete(int id) 
+    private void Delete(int id)
     {
         var item = db.Blogs.FirstOrDefault(x => x.BlogId == id);
         if (item is null)

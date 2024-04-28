@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NBLDotNetCore.ConsoleApp.Dtos;
-using NBLDotNetCore.ConsoleApp.Services;
+using NBLDotNetCore.RestApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBLDotNetCore.ConsoleApp.EfCoreExamples
+namespace NBLDotNetCore.RestApi.Db
 {
 
 
@@ -19,6 +18,6 @@ namespace NBLDotNetCore.ConsoleApp.EfCoreExamples
             optionsBuilder.UseSqlServer(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
         }
 
-        public DbSet<BlogDto> Blogs { get; set; }
+        public DbSet<BlogModel> Blogs { get; set; }
     }
 }

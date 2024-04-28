@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBLDotNetCore.ConsoleApp
+namespace NBLDotNetCore.ConsoleApp.AdoDotNetExamples
 {
     internal class AdoDotNetExample
     {
@@ -19,13 +19,13 @@ namespace NBLDotNetCore.ConsoleApp
             Password = "sa@123"
         };
 
-        private string Result(int result,string processType)
+        private string Result(int result, string processType)
         {
-           return result > 0 ? processType+" Success" : processType+" Failed";
+            return result > 0 ? processType + " Success" : processType + " Failed";
         }
 
         public void Read()
-        {            
+        {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             Console.WriteLine("Open is Here");
@@ -49,7 +49,7 @@ namespace NBLDotNetCore.ConsoleApp
             }
         }
 
-        public void Insert(string title,string author , string content)
+        public void Insert(string title, string author, string content)
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
@@ -67,7 +67,7 @@ namespace NBLDotNetCore.ConsoleApp
             cmd.Parameters.AddWithValue("@BlogContent", content);
             int result = cmd.ExecuteNonQuery();
             connection.Close();
-            string message = Result(result,"Inserting");
+            string message = Result(result, "Inserting");
             Console.WriteLine(message);
         }
 
@@ -83,7 +83,7 @@ namespace NBLDotNetCore.ConsoleApp
             DataTable dt = new DataTable();
             sqlDataAdapter.Fill(dt);
             connection.Close();
-            if(dt.Rows.Count == 0)
+            if (dt.Rows.Count == 0)
             {
                 Console.WriteLine("No data found!");
                 return;
@@ -97,7 +97,7 @@ namespace NBLDotNetCore.ConsoleApp
             }
         }
 
-        public void Update(int id,string title, string author , string content)
+        public void Update(int id, string title, string author, string content)
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
