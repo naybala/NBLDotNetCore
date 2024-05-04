@@ -74,7 +74,38 @@ namespace NBLDotNetCore.RestApi.Controllers
         [HttpPatch("{id}")]
         public IActionResult PatchBlog(int id, BlogModel blog)
         {
-            return Ok();
+            var item = FindById(id);
+            if (item is null)
+            {
+                return NotFound("No Data Found");
+            }
+            string conditions = string.Empty;
+            if (!string.IsNullOrEmpty(blog.BlogTitle))
+            {
+                conditions += " [BlogTitle] = @BlogTitle, ";    
+            }
+            if (!string.IsNullOrEmpty(blog.BlogAuthor))
+            {
+                conditions = " [BlogAuthor] = @BlogAuthor, ";
+            }
+            if (!string.IsNullOrEmpty(blog.BlogContent))
+            {
+                conditions = " [BlogContent] = @BlogContent, ";
+            }
+            if(conditions.Length == 0)
+            {
+                return NotFound("No data for update");
+            }
+
+            conditions = conditions.Substring(0, conditions.Length - 2);
+            blog.BlogId = id;
+            string query = $@"UPDATE [dbo].[Tbl_Blog]
+                           SET {conditions}
+                           WHERE [BlogId] = @BlogId";
+            using IDbConnection db = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
+            int result = db.Execute(query, blog);
+            string message = result > 0 ? "Updating Success." : "Updating Failed.";
+            return Ok(message);
         }
 
         [HttpDelete("{id}")]
