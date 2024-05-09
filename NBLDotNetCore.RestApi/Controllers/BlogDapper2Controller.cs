@@ -100,7 +100,7 @@ namespace NBLDotNetCore.RestApi.Controllers
             string query = $@"UPDATE [dbo].[Tbl_Blog]
                            SET {conditions}
                            WHERE [BlogId] = @BlogId";
-            string message = _dapperService.Execute(query, "Updateing Patch", blog);
+            string message = _dapperService.Execute(query, "Updating Patch", blog);
             return Ok(message);
         }
 

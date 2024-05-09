@@ -125,7 +125,10 @@ namespace NBLDotNetCore.RestApi.Controllers
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
             var count = (int)cmd.ExecuteScalar();
-            if (count == 0) return NotFound();
+            if (count == 0)
+            {
+                return NotFound();
+            }
             SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             dataAdapter.Fill(dt);
