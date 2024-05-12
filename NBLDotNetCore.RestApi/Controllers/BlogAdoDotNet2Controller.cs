@@ -61,14 +61,10 @@ namespace NBLDotNetCore.RestApi.Controllers
         public IActionResult UpdateBlog(int id, BlogModel blog)
         {
             string getQuery = "SELECT COUNT(*) FROM Tbl_Blog WHERE BlogId = @BlogId";
-            SqlConnection connection = new SqlConnection(ConnectionStrings.SqlConnectionStringBuilder.ConnectionString);
-            connection.Open();
-            SqlCommand checkCmd = new SqlCommand(getQuery, connection);
-            checkCmd.Parameters.AddWithValue("@BlogId", id);
-            var count = (int)checkCmd.ExecuteScalar();
-            if (count == 0)
+            var item = _adoDotNetService.QueryFirstOrDefault<BlogModel>(getQuery, new AdoDotNetParameter("@BlogId", id));
+            if (item is null)
             {
-                return NotFound("Data Not Found");
+                return NotFound("No data found.");
             }
             string updateQuery = @"UPDATE [dbo].[Tbl_Blog]
                            SET [BlogTitle] = @BlogTitle,
@@ -90,6 +86,36 @@ namespace NBLDotNetCore.RestApi.Controllers
         [HttpPatch("{id}")]
         public IActionResult PatchBlog(int id, BlogModel blog)
         {
+            string getQuery = "SELECT COUNT(*) FROM Tbl_Blog WHERE BlogId = @BlogId";
+            var item = _adoDotNetService.QueryFirstOrDefault<BlogModel>(getQuery, new AdoDotNetParameter("@BlogId", id));
+            if (item is null)
+            {
+                return NotFound("No data found.");
+            }
+            string conditions = string.Empty;
+            if (!string.IsNullOrEmpty(blog.BlogTitle))
+            {
+                conditions += " [BlogTitle] = @BlogTitle, ";
+            }
+            if (!string.IsNullOrEmpty(blog.BlogAuthor))
+            {
+                conditions = " [BlogAuthor] = @BlogAuthor, ";
+            }
+            if (!string.IsNullOrEmpty(blog.BlogContent))
+            {
+                conditions = " [BlogContent] = @BlogContent, ";
+            }
+            if (conditions.Length == 0)
+            {
+                return NotFound("No data for update");
+            }
+
+            conditions = conditions.Substring(0, conditions.Length - 2);
+            blog.BlogId = id;
+            string query = $@"UPDATE [dbo].[Tbl_Blog]
+                           SET {conditions}
+                           WHERE [BlogId] = @BlogId";
+           
             return Ok("Patch");
         }
 
