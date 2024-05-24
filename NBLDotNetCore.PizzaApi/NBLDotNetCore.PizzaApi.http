@@ -1,0 +1,6 @@
+@NBLDotNetCore.PizzaApi_HostAddress = http://localhost:5018
+
+GET {{NBLDotNetCore.PizzaApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
